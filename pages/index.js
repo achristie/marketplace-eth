@@ -1,29 +1,28 @@
-import { Hero, Breadcrumbs } from "@components/common";
-import { List } from "@components/course";
-import { BaseLayout } from "@components/layout";
+import { Hero, Breadcrumbs } from "@components/ui/common";
+import { List } from "@components/ui/course";
+import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
+import { useWeb3 } from "@components/providers";
 
-export default function Home({ courses }) {
+function Home({ courses }) {
+  const { web3, isLoading } = useWeb3();
+
   return (
-    <BaseLayout>
+    <>
+      <p>{isLoading ? "IS" : web3 ? "Web3 Ready" : "Install Metamask"}</p>
       <Hero />
       <List courses={courses} />
-    </BaseLayout>
+    </>
   );
 }
 
-// export function getStaticPaths() {
-//   const { data } = getAllCourses();
+const Wrapper = ({ ...props }) => (
+  <BaseLayout>
+    <Home {...props} />
+  </BaseLayout>
+);
 
-//   return {
-//     paths: data.map((c) => ({
-//       params: {
-//         slug: c.slug,
-//       },
-//     })),
-//     fallback: false,
-//   };
-// }
+export default Wrapper;
 
 export function getStaticProps({}) {
   const { data } = getAllCourses();
