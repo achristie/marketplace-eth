@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["postcss", "8.4.6"],
             ["react", "17.0.2"],
             ["react-dom", "virtual:17.0.2_react@17.0.2#17.0.2"],
+            ["swr", "virtual:1.2.2_react@17.0.2#1.2.2"],
             ["tailwindcss", "virtual:3.0.22_autoprefixer@10.4.2#3.0.22"],
             ["web3", "1.7.0"]
           ],
@@ -3900,6 +3901,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["swarm-js", "0.1.40"],
             ["tar", "4.4.19"],
             ["xhr-request", "1.1.0"]
+          ],
+        }]
+      ]],
+      ["swr", [
+        ["virtual:1.2.2_react@17.0.2#1.2.2", {
+          "packageLocation": "./node_modules/.pnpm/swr@1.2.2_react@17.0.2/node_modules/swr",
+          "packageDependencies": [
+            ["react", "17.0.2"],
+            ["swr", "virtual:1.2.2_react@17.0.2#1.2.2"]
           ],
         }]
       ]],

@@ -1,10 +1,12 @@
 import { useWeb3 } from "@components/providers";
 import Link from "next/link";
 import { Button } from "@components/ui/common";
-import { useAccount } from "@components/web3/hooks/useAccount";
+import { useAccount } from "@components/hooks/web3/useAccount";
+import { useRouter } from "next/router";
 export default function Navbar() {
   const { connect, isWeb3Loaded, isLoading } = useWeb3();
   const { account } = useAccount();
+  const { pathname } = useRouter();
   return (
     <section>
       <div className="relative pt-6 px-4 sm:px-6 lg:px-8">
@@ -13,7 +15,7 @@ export default function Navbar() {
             <div>
               <Link href="#">
                 <a className="font-medium mr-8 text-gray-500 hover:text-gray-900">
-                  {account}
+                  Home
                 </a>
               </Link>
               <Link href="/features">
@@ -40,7 +42,13 @@ export default function Navbar() {
                   Loading...
                 </Button>
               ) : isWeb3Loaded ? (
-                <Button onClick={connect}>Connect Wallet</Button>
+                account.data ? (
+                  <Button hoverable={false}>
+                    Hello! {account.isAdmin ? "Admin" : ""}
+                  </Button>
+                ) : (
+                  <Button onClick={connect}>Connect</Button>
+                )
               ) : (
                 <Button
                   onClick={() =>
@@ -54,6 +62,13 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
+      {account.data && !pathname.includes("/marketplace") && (
+        <div className="flex justify-end pt-1 sm:px-6 lg:px-8">
+          <div className="text-white bg-indigo-600 rounded-md p-2">
+            {account.data}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
