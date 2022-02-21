@@ -1,4 +1,5 @@
-import { Hero, KeyPoint, Lecture, Modal } from "@components/ui/course";
+import { Hero, KeyPoint, Lecture } from "@components/ui/course";
+import { Modal } from "@components/ui/common";
 import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
 
