@@ -1,8 +1,8 @@
 import { useWeb3 } from "@components/providers";
-import Link from "next/link";
 import { Button } from "@components/ui/common";
 import { useAccount } from "@components/hooks/web3";
 import { useRouter } from "next/router";
+import { ActiveLink } from "@components/ui/common";
 export default function Navbar() {
   const { connect, requireInstall, isLoading } = useWeb3();
   const { account } = useAccount();
@@ -13,21 +13,21 @@ export default function Navbar() {
         <nav className="relative" aria-label="Global">
           <div className="flex justify-between items-center">
             <div>
-              <Link href="#">
+              <ActiveLink href="#">
                 <a className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                   Home
                 </a>
-              </Link>
-              <Link href="/features">
+              </ActiveLink>
+              <ActiveLink href="/features">
                 <a className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                   Features
                 </a>
-              </Link>
-              <Link href="/marketplace">
+              </ActiveLink>
+              <ActiveLink href="/marketplace">
                 <a className="font-medium mr-8 text-gray-500 hover:text-gray-900">
                   Marketplace
                 </a>
-              </Link>
+              </ActiveLink>
             </div>
             <div>
               <a
