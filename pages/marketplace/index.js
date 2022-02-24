@@ -11,6 +11,10 @@ function Marketplace({ courses }) {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const { canPurchaseCourse } = useWalletInfo();
 
+  const purchaseCourse = (order) => {
+    console.log(JSON.stringify(order));
+  };
+
   return (
     <>
       <div className="py-4">
@@ -27,7 +31,7 @@ function Marketplace({ courses }) {
                 <Button
                   onClick={() => setSelectedCourse(course)}
                   variant="lightPurple"
-                  disabled={canPurchaseCourse}
+                  disabled={!canPurchaseCourse}
                 >
                   Purchase
                 </Button>
@@ -39,6 +43,7 @@ function Marketplace({ courses }) {
       {selectedCourse && (
         <OrderModal
           course={selectedCourse}
+          onSubmit={purchaseCourse}
           onClose={() => setSelectedCourse(null)}
         />
       )}

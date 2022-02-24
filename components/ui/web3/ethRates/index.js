@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { useEthPrice } from "@components/hooks/useEthPrice";
+import { useEthPrice, COURSE_PRICE } from "@components/hooks/useEthPrice";
+import { Loader } from "@components/ui/common";
 export default function EthRates() {
   const { eth } = useEthPrice();
   return (
@@ -7,13 +8,21 @@ export default function EthRates() {
       <div className="flex flex-1 items-stretch text-center">
         <div className="p-10 border drop-shadow rounded-md">
           <div className="flex items-center">
-            <Image
-              layout="fixed"
-              width="35"
-              height="35"
-              src="/small-eth.webp"
-            />
-            <span className="text-2xl font-bold">ETH = ${eth.data}</span>
+            {!eth.data ? (
+              <div className="w-full flex justify-center">
+                <Loader size="lg" />
+              </div>
+            ) : (
+              <>
+                <Image
+                  layout="fixed"
+                  width="35"
+                  height="35"
+                  src="/small-eth.webp"
+                />
+                <span className="text-2xl font-bold">ETH = ${eth.data}</span>
+              </>
+            )}
           </div>
           <p className="text-xl text-gray-500">Current eth Price</p>
         </div>
@@ -21,15 +30,23 @@ export default function EthRates() {
       <div className="flex flex-1 items-stretch text-center">
         <div className="p-10 border drop-shadow rounded-md">
           <div>
-            <span className="text-2xl font-bold">{eth.perItem}</span>
+            {!eth.data ? (
+              <div className="w-full flex justify-center">
+                <Loader size="lg" />
+              </div>
+            ) : (
+              <>
+                <span className="text-2xl font-bold">{eth.perItem}</span>
 
-            <Image
-              layout="fixed"
-              width="35"
-              height="35"
-              src="/small-eth.webp"
-            />
-            <span className="text-2xl font-bold">= $15</span>
+                <Image
+                  layout="fixed"
+                  width="35"
+                  height="35"
+                  src="/small-eth.webp"
+                />
+                <span className="text-2xl font-bold">= ${COURSE_PRICE}</span>
+              </>
+            )}
           </div>
           <p className="text-xl text-gray-500">Price per course</p>
         </div>
