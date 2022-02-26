@@ -5,7 +5,7 @@ const SIZES = {
 };
 export default function Loader({ size = "md" }) {
   return (
-    <div class={`lds-default ${SIZES[size]}`}>
+    <div className={`lds-default ${SIZES[size]}`}>
       {Array.from({ length: 12 }).map((_, i) => (
         <div className={`t${i + 1}`} key={`dot-${i}`} />
       ))}

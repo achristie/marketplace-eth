@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.2.0",
