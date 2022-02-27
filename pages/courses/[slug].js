@@ -2,12 +2,18 @@ import { Hero, KeyPoint, Lecture } from "@components/ui/course";
 import { Modal } from "@components/ui/common";
 import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
+import { useAccount, useOwnedCourse } from "@components/hooks/web3";
 
-export default function Course({ course }) {
+function Course({ course }) {
+  const { account } = useAccount();
+  const { ownedCourse } = useOwnedCourse(course, account.data);
+
+  console.log(ownedCourse);
   return (
-    <BaseLayout>
+    <>
       <div className="py-4">
         <Hero
+          hasOwner={!!ownedCourse.data}
           title={course.title}
           description={course.description}
           image={course.coverImage}
@@ -16,6 +22,14 @@ export default function Course({ course }) {
       <KeyPoint points={course.wsl} />
       <Lecture locked={true} />
       <Modal />
+    </>
+  );
+}
+
+export default function Wrapper({ ...props }) {
+  return (
+    <BaseLayout>
+      <Course {...props} />
     </BaseLayout>
   );
 }
