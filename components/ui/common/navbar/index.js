@@ -29,14 +29,12 @@ export default function Navbar() {
                 </a>
               </ActiveLink>
             </div>
-            <div>
-              <a
-                href="#"
-                className="font-medium mr-8 text-gray-500 hover:text-gray-900"
-              >
-                Company
-              </a>
-
+            <div className="text-center">
+              <ActiveLink href="/wishlist">
+                <a className="font-medium sm:mr-8 text-gray-500 hover:text-gray-900">
+                  Wishlist
+                </a>
+              </ActiveLink>
               {isLoading ? (
                 <Button disabled={true} onClick={connect}>
                   Loading...

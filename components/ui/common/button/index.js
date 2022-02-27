@@ -11,10 +11,11 @@ export default function Button({
       hoverable && "hover:bg-indigo-200"
     }`,
     red: `text-white bg-red-600 ${hoverable && "hover:bg-red-700"}`,
+    white: `text-black bg-white`,
   };
   return (
     <button
-      className={`disabled:opacity-50 disabled:cursor-not-allowed px-8 py-3 border rounded-md text-base font-medium 
+      className={`disabled:opacity-50 disabled:cursor-not-allowed p-2 xs:px-8 xs:py-3 border rounded-md text-base font-medium 
       ${className} ${variants[variant]}`}
       {...rest}
     >
