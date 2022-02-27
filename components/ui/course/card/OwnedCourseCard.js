@@ -24,7 +24,7 @@ export default function OwnedCourseCard({ children, course }) {
               {course.proof}
             </dd>
           </div>
-          <div className="bg-white px-4 py-5 sm:px-6">{children}</div>
+          {/* <div className="bg-white px-4 py-5 sm:px-6">{children}</div> */}
         </dl>
       </div>
     </div>
