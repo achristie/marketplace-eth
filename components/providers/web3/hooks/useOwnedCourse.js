@@ -13,6 +13,7 @@ export const handler = (web3, contract) => (course, account) => {
 
       const c = await contract;
       const ownedCourse = await c.methods.getCourseByHash(courseHash).call();
+
       if (ownedCourse.owner === "0x0000000000000000000000000000000000000000") {
         return null;
       }

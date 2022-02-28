@@ -1,5 +1,5 @@
 import { Hero, KeyPoint, Lecture } from "@components/ui/course";
-import { Modal } from "@components/ui/common";
+import { Message, Modal } from "@components/ui/common";
 import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
 import { useAccount, useOwnedCourse } from "@components/hooks/web3";
@@ -7,8 +7,9 @@ import { useAccount, useOwnedCourse } from "@components/hooks/web3";
 function Course({ course }) {
   const { account } = useAccount();
   const { ownedCourse } = useOwnedCourse(course, account.data);
+  const courseState = ownedCourse.data?.state;
+  // const courseState = "deactivated";
 
-  console.log(ownedCourse);
   return (
     <>
       <div className="py-4">
@@ -20,6 +21,19 @@ function Course({ course }) {
         />
       </div>
       <KeyPoint points={course.wsl} />
+      {courseState && (
+        <div className="max-w-5xl mx-auto">
+          {courseState === "purchased" && (
+            <Message>Course is purchased and awaiting Activation</Message>
+          )}
+          {courseState === "deactivated" && (
+            <Message type="danger">Course is deactivated</Message>
+          )}
+          {courseState === "activated" && (
+            <Message type="success">Course is active. Good luck!</Message>
+          )}
+        </div>
+      )}
       <Lecture locked={true} />
       <Modal />
     </>

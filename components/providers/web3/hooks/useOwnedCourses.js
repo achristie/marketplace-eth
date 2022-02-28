@@ -30,7 +30,6 @@ export const handler = (web3, contract) => (courses, account) => {
         }
       }
 
-      console.log(ownedCourses);
       return ownedCourses;
     }
   );
