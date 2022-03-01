@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Loader } from "@components/ui/common";
 const lectures = [
   "How to init App",
   "How to get a help",
@@ -6,7 +8,7 @@ const lectures = [
   "How to write For Loops",
   "Safe operator",
 ];
-export default function Lecture({ locked }) {
+export default function Lecture({ locked, isLoading, courseState }) {
   const statusClass =
     "px-2 inline-flex text-xs leading-5 font-semibold rounded-full";
   return (
@@ -59,12 +61,32 @@ export default function Lecture({ locked }) {
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <a
-                          href="#"
-                          className="text-indigo-600 hover:text-indigo-900"
-                        >
-                          {locked ? "Get Access" : "Play"}
-                        </a>
+                        {isLoading ? (
+                          <Loader />
+                        ) : locked ? (
+                          <>
+                            {courseState === "deactivated" && (
+                              <Link href="/marketplace">
+                                <a className="text-indigo-600 hover:text-indigo-900">
+                                  Get Access
+                                </a>
+                              </Link>
+                            )}
+                            {courseState === "purchased" && (
+                              <Link href="/faq">
+                                <a className="text-indigo-600 hover:text-indigo-900">
+                                  Waiting for activation
+                                </a>
+                              </Link>
+                            )}
+                          </>
+                        ) : (
+                          <Link href="/watch">
+                            <a className="text-indigo-600 hover:text-indigo-900">
+                              Watch
+                            </a>
+                          </Link>
+                        )}
                       </td>
                     </tr>
                   ))}

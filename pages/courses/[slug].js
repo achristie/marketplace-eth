@@ -3,11 +3,17 @@ import { Message, Modal } from "@components/ui/common";
 import { BaseLayout } from "@components/ui/layout";
 import { getAllCourses } from "@content/courses/fetcher";
 import { useAccount, useOwnedCourse } from "@components/hooks/web3";
+import { useWeb3 } from "@components/providers";
 
 function Course({ course }) {
+  const { isLoading } = useWeb3();
   const { account } = useAccount();
   const { ownedCourse } = useOwnedCourse(course, account.data);
   const courseState = ownedCourse.data?.state;
+  const isLocked =
+    !courseState ||
+    courseState === "purchased" ||
+    courseState === "deactivated";
   // const courseState = "deactivated";
 
   return (
@@ -34,7 +40,11 @@ function Course({ course }) {
           )}
         </div>
       )}
-      <Lecture locked={true} />
+      <Lecture
+        locked={isLocked}
+        courseState={courseState}
+        isLoading={isLoading}
+      />
       <Modal />
     </>
   );
