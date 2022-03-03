@@ -1,7 +1,7 @@
 const Item = ({ title, value, className }) => {
   return (
     <div
-      className={`${className} px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
+      className={`${className} px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6`}
     >
       <div className="text-sm font-medium text-gray-500">{title}</div>
       <div className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -22,7 +22,7 @@ export default function ManagedCourseCard({ children, course }) {
             value={course[key]}
           />
         ))}
-        <div className="bg-white px-4 py-5 sm:px-6">{children}</div>
+        <div className="bg-white px-4 py-2 sm:px-6">{children}</div>
       </div>
     </div>
   );
