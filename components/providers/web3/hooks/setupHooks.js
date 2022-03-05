@@ -7,7 +7,7 @@ import { handler as createManageCoursesHook } from "./useManageCourses";
 export const setupHooks = ({ web3, provider, contract }) => {
   return {
     useAccount: createAccountHook(web3, provider),
-    useNetwork: createNetworkHook(web3, provider),
+    useNetwork: createNetworkHook(web3),
     useOwnedCourses: createOwnedCoursesHook(web3, contract),
     useOwnedCourse: createOwnedCourseHook(web3, contract),
     useManageCourses: createManageCoursesHook(web3, contract),

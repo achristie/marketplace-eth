@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { AnimateKeyframes } from "react-simple-animate";
 
-export default function Card({ course, Footer, disabled }) {
+export default function Card({ course, Footer, disabled, state }) {
   return (
     <div
       key={course.id}
@@ -19,8 +20,35 @@ export default function Card({ course, Footer, disabled }) {
           />
         </div>
         <div className="p-8 pb-4 flex-2">
-          <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
-            {course.type}
+          <div className="flex items-center">
+            <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+              {course.type}
+            </div>
+
+            <div className="ml-2">
+              {state === "activated" && (
+                <div className="text-xs text-black bg-green-200 p-1 px-3 rounded-full">
+                  Activated
+                </div>
+              )}
+              {state === "deactivated" && (
+                <div className="text-xs text-black bg-red-200 p-1 px-3 rounded-full">
+                  Deactivated
+                </div>
+              )}
+              {state === "purchased" && (
+                <AnimateKeyframes
+                  play
+                  duration={3}
+                  keyframes={["opacity: 0", "opacity: 1"]}
+                  iterationCount="infinite"
+                >
+                  <div className="text-xs text-black bg-yellow-200 p-1 px-3 rounded-full">
+                    Awaiting Activation
+                  </div>
+                </AnimateKeyframes>
+              )}
+            </div>
           </div>
           <Link href={`/courses/${course.slug}`}>
             <a

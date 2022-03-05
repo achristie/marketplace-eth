@@ -2,9 +2,12 @@ import { createCourseHash } from "@utils/hash";
 import { normalizeOwnedCourse } from "@utils/normalize";
 import useSWR from "swr";
 
-export const handler = (web3, contract) => (courses, account) => {
+export const handler = (web3, contract) => (courses, account, network) => {
   const swrRes = useSWR(
-    () => (web3 && contract && account ? `web3/ownedCourses/${account}` : null),
+    () =>
+      web3 && contract && account && network
+        ? `web3/ownedCourses/${account}/${network}`
+        : null,
     async () => {
       const ownedCourses = [];
 
@@ -31,5 +34,12 @@ export const handler = (web3, contract) => (courses, account) => {
     }
   );
 
-  return swrRes;
+  return {
+    ...swrRes,
+    lookup:
+      swrRes.data?.reduce((a, c) => {
+        a[c.id] = c;
+        return a;
+      }, {}) ?? {},
+  };
 };

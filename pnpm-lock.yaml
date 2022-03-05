@@ -7,6 +7,7 @@ specifiers:
   postcss: ^8.4.6
   react: ^17.0.2
   react-dom: ^17.0.2
+  react-simple-animate: ^3.3.12
   swr: ^1.2.2
   tailwindcss: ^3.0.22
   web3: ^1.7.0
@@ -18,6 +19,7 @@ dependencies:
   postcss: 8.4.6
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-simple-animate: 3.3.12_react-dom@17.0.2+react@17.0.2
   swr: 1.2.2_react@17.0.2
   tailwindcss: 3.0.22_autoprefixer@10.4.2
   web3: 1.7.0
@@ -2527,6 +2529,16 @@ packages:
       object-assign: 4.1.1
       react: 17.0.2
       scheduler: 0.20.2
+    dev: false
+
+  /react-simple-animate/3.3.12_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-lFXjxD6ficcpOMsHfcDs1jqdkCve6jNlJnubOCzVOLswFDRANsaLN4KwpezDuliEFz8Q1zyj4J7Tmj3KMRnPcg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17
+      react-dom: ^16.8.0 || ^17
+    dependencies:
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /react/17.0.2:

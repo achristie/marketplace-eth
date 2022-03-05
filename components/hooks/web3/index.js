@@ -87,11 +87,13 @@ export const useManageCourses = (...args) => {
 export const useWalletInfo = () => {
   const { account } = useAccount();
   const { network } = useNetwork();
-  const canPurchaseCourse = !!(account.data && network.isSupported);
+  const hasConnectedWallet = !!(account.data && network.isSupported);
+  const isConnecting = !account.isInitialized && network.isInitialized;
 
   return {
     account,
     network,
-    canPurchaseCourse,
+    isConnecting,
+    hasConnectedWallet,
   };
 };
