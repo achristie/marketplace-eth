@@ -236,4 +236,131 @@ contract("CourseMarketplace", (accounts) => {
       );
     });
   });
+  describe("Normal withdraw", () => {
+    const fundsToDeposit = "100000000000000000";
+    const overLimitFunds = "990000000099999990";
+    let currentOwner = null;
+
+    before(async () => {
+      currentOwner = await _contract.getContractOwner();
+      await web3.eth.sendTransaction({
+        from: buyer,
+        to: _contract.address,
+        value: fundsToDeposit,
+      });
+    });
+
+    it("should fail when withdrawing unless from owner", async () => {
+      const value = "1800000000000000";
+      await catchRevert(_contract.withdraw(value, { from: buyer }));
+    });
+    it("should fail if attempting to withdraw too much", async () => {
+      await catchRevert(
+        _contract.withdraw(overLimitFunds, { from: contractOwner })
+      );
+    });
+    it("should have ", async () => {
+      const ownerBalance = await web3.eth.getBalance(currentOwner);
+      const result = await _contract.withdraw(fundsToDeposit, {
+        from: currentOwner,
+      });
+      const newOwnerBalance = await web3.eth.getBalance(currentOwner);
+
+      const gas = await getGas(result);
+
+      assert.equal(
+        web3.utils
+          .toBN(ownerBalance)
+          .add(web3.utils.toBN(fundsToDeposit))
+          .sub(gas)
+          .toString(),
+        newOwnerBalance,
+        "new owner balance is not correct"
+      );
+    });
+  });
+
+  describe("Emergency withdraw", () => {
+    let currentOwner;
+
+    before(async () => {
+      currentOwner = await _contract.getContractOwner();
+    });
+
+    after(async () => {
+      await _contract.resumeContract({ from: currentOwner });
+    });
+
+    it("should fail when contract is not stopped", async () => {
+      await catchRevert(_contract.emergencyWithdraw({ from: currentOwner }));
+    });
+    it("should have +contract funds on owner", async () => {
+      await _contract.stopContract({ from: currentOwner });
+      const contractBalance = await web3.eth.getBalance(_contract.address);
+      const ownerBalance = await web3.eth.getBalance(currentOwner);
+
+      const result = await _contract.emergencyWithdraw({ from: currentOwner });
+      const gas = await getGas(result);
+
+      const newOwnerBalance = await web3.eth.getBalance(currentOwner);
+
+      assert.equal(
+        web3.utils
+          .toBN(ownerBalance)
+          .add(web3.utils.toBN(contractBalance))
+          .sub(gas),
+        newOwnerBalance,
+        "Owner should get contract funds"
+      );
+    });
+
+    it("should have a contract balance of 0", async () => {
+      const contractBalance = await web3.eth.getBalance(_contract.address);
+
+      assert.equal(contractBalance, 0, "contract balance should be 0");
+    });
+  });
+  describe("Self destruct", () => {
+    let currentOwner;
+
+    before(async () => {
+      currentOwner = await _contract.getContractOwner();
+    });
+
+    it("should fail when contract is not stopped", async () => {
+      await catchRevert(_contract.selfDestruct({ from: currentOwner }));
+    });
+
+    it("should have +contract funds on owner", async () => {
+      await _contract.stopContract({ from: currentOwner });
+      const contractBalance = await web3.eth.getBalance(_contract.address);
+      const ownerBalance = await web3.eth.getBalance(currentOwner);
+
+      const result = await _contract.selfDestruct({ from: currentOwner });
+      const gas = await getGas(result);
+
+      const newOwnerBalance = await web3.eth.getBalance(currentOwner);
+
+      assert.equal(
+        web3.utils
+          .toBN(ownerBalance)
+          .add(web3.utils.toBN(contractBalance))
+          .sub(gas),
+        newOwnerBalance,
+        "Owner should get contract funds"
+      );
+    });
+
+    it("should have a contract balance of 0", async () => {
+      const contractBalance = await web3.eth.getBalance(_contract.address);
+
+      assert.equal(contractBalance, 0, "contract balance should be 0");
+    });
+
+    it("should have a 0x bytecode", async () => {
+      const code = web3.eth.getCode(_contract.address);
+
+      assert.equal(code, "0x", "contract is not destroyed");
+    });
+  });
 });
