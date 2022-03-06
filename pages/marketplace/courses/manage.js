@@ -8,6 +8,7 @@ import {
 } from "@components/ui/course";
 import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
+import { normalizeOwnedCourse } from "@utils/normalize";
 import { useState } from "react";
 
 const VerificationInput = ({ onVerify }) => {
@@ -29,6 +30,8 @@ const VerificationInput = ({ onVerify }) => {
 };
 
 function ManageCourses() {
+  const [filter, setFilters] = useState({ state: "all" });
+  const [searchedCourse, setSearchedCourse] = useState(null);
   const [proofedOwnership, setProofedOwnership] = useState({});
   const { web3, contract } = useWeb3();
   const { account } = useAdmin({ redirectTo: "/marketplace" });
@@ -54,49 +57,82 @@ function ManageCourses() {
       console.error(e.message);
     }
   };
+
+  const searchCourse = async (courseHash) => {
+    const re = /[0-9A-Fa-f]{6}/g;
+
+    if (courseHash && courseHash.length == 66 && re.test(courseHash)) {
+      const c = await contract;
+      const course = await c.methods.getCourseByHash(courseHash).call();
+      if (course.owner !== "0x0000000000000000000000000000000000000000") {
+        const normalized = normalizeOwnedCourse(web3)(
+          { hash: courseHash },
+          course
+        );
+        setSearchedCourse(normalized);
+        console.log(searchedCourse);
+        return;
+      }
+    }
+
+    setSearchedCourse(null);
+  };
+  const renderCard = (course) => {
+    return (
+      <ManagedCourseCard key={course.ownedCourseId} course={course}>
+        <VerificationInput
+          onVerify={(email) => {
+            verifyCourse(email, { hash: course.hash, proof: course.proof });
+          }}
+        />
+        {proofedOwnership[course.hash] && (
+          <div className="mt-4">
+            <Message>Verified</Message>
+          </div>
+        )}
+        {proofedOwnership[course.hash] == false && (
+          <div className="mt-4">
+            <Message type="danger">Wrong Proof</Message>
+          </div>
+        )}
+        <div className="mt-4">
+          <Button
+            variant="green"
+            onClick={() => changeCourseState(course.hash, "activateCourse")}
+          >
+            Activate
+          </Button>
+          <Button
+            variant="red"
+            onClick={() => changeCourseState(course.hash, "deactivateCourse")}
+          >
+            Deactivate
+          </Button>
+        </div>
+      </ManagedCourseCard>
+    );
+  };
   if (!account.isAdmin) {
     return null;
   }
   return (
     <>
       <MarketHeader />
-      <CourseFilter />
+      <CourseFilter
+        onSearchSubmit={searchCourse}
+        onFilterSelect={(v) => setFilters({ state: v })}
+      />
       <section className="grid grid-cols-1">
-        {manageCourses.data?.map((course) => (
-          <ManagedCourseCard key={course.ownedCourseId} course={course}>
-            <VerificationInput
-              onVerify={(email) => {
-                verifyCourse(email, { hash: course.hash, proof: course.proof });
-              }}
-            />
-            {proofedOwnership[course.hash] && (
-              <div className="mt-4">
-                <Message>Verified</Message>
-              </div>
-            )}
-            {proofedOwnership[course.hash] == false && (
-              <div className="mt-4">
-                <Message type="danger">Wrong Proof</Message>
-              </div>
-            )}
-            <div className="mt-4">
-              <Button
-                variant="green"
-                onClick={() => changeCourseState(course.hash, "activateCourse")}
-              >
-                Activate
-              </Button>
-              <Button
-                variant="red"
-                onClick={() =>
-                  changeCourseState(course.hash, "deactivateCourse")
-                }
-              >
-                Deactivate
-              </Button>
-            </div>
-          </ManagedCourseCard>
-        ))}
+        {searchedCourse && <div>{renderCard(searchedCourse)}</div>}
+        <h1 className="text-2xl p-5 font-bold">All Courses</h1>
+        {manageCourses.data
+          ?.filter((course) => {
+            if (filter.state === "all") {
+              return true;
+            }
+            return course.state === filter.state;
+          })
+          .map((course) => renderCard(course))}
       </section>
     </>
   );
