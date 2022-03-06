@@ -213,4 +213,27 @@ contract("CourseMarketplace", (accounts) => {
       );
     });
   });
+
+  describe("Receive funds", () => {
+    it("should have funds", async () => {
+      const value = "10000000000000000";
+      const contractBeforeTx = await web3.eth.getBalance(_contract.address);
+      await web3.eth.sendTransaction({
+        from: buyer,
+        to: _contract.address,
+        value,
+      });
+
+      const contractAfterTx = await web3.eth.getBalance(_contract.address);
+
+      assert.equal(
+        web3.utils
+          .toBN(contractBeforeTx)
+          .add(web3.utils.toBN(value))
+          .toString(),
+        contractAfterTx,
+        "Values do not match"
+      );
+    });
+  });
 });
