@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "17.0.2"],
             ["react-dom", "virtual:17.0.2_react@17.0.2#17.0.2"],
             ["react-simple-animate", "virtual:3.3.12_react-dom@17.0.2+react@17.0.2#3.3.12"],
+            ["react-toastify", "virtual:8.2.0_react-dom@17.0.2+react@17.0.2#8.2.0"],
             ["swr", "virtual:1.2.2_react@17.0.2#1.2.2"],
             ["tailwindcss", "virtual:3.0.22_autoprefixer@10.4.2#3.0.22"],
             ["web3", "1.7.0"]
@@ -1410,6 +1411,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["clone-response", "1.0.2"],
             ["mimic-response", "1.0.1"]
+          ],
+        }]
+      ]],
+      ["clsx", [
+        ["1.1.1", {
+          "packageLocation": "./node_modules/.pnpm/clsx@1.1.1/node_modules/clsx",
+          "packageDependencies": [
+            ["clsx", "1.1.1"]
           ],
         }]
       ]],
@@ -4470,6 +4479,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "17.0.2"],
             ["react-dom", "virtual:17.0.2_react@17.0.2#17.0.2"],
             ["react-simple-animate", "virtual:3.3.12_react-dom@17.0.2+react@17.0.2#3.3.12"]
+          ],
+        }]
+      ]],
+      ["react-toastify", [
+        ["virtual:8.2.0_react-dom@17.0.2+react@17.0.2#8.2.0", {
+          "packageLocation": "./node_modules/.pnpm/react-toastify@8.2.0_react-dom@17.0.2+react@17.0.2/node_modules/react-toastify",
+          "packageDependencies": [
+            ["clsx", "1.1.1"],
+            ["react", "17.0.2"],
+            ["react-dom", "virtual:17.0.2_react@17.0.2#17.0.2"],
+            ["react-toastify", "virtual:8.2.0_react-dom@17.0.2+react@17.0.2#8.2.0"]
           ],
         }]
       ]],

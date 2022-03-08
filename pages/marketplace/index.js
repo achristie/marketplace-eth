@@ -7,6 +7,7 @@ import { OrderModal } from "@components/ui/order";
 import { useState } from "react";
 import { MarketHeader } from "@components/ui/marketplace";
 import { useWeb3 } from "@components/providers";
+import { toast } from "react-toastify";
 
 function Marketplace({ courses }) {
   const { web3, contract, requireInstall } = useWeb3();
@@ -37,6 +38,20 @@ function Marketplace({ courses }) {
     }
   };
 
+  const notify = () => {
+    const resolveAfter3Sec = new Promise((resolve) =>
+      setTimeout(() => resolve("world"), 3000)
+    );
+    toast.promise(resolveAfter3Sec, {
+      pending: "pending..",
+      success: {
+        render({ data }) {
+          return `Hello ${data}`;
+        },
+      },
+    });
+  };
+
   const _purchaseCourse = async (hexCourseId, proof, value) => {
     try {
       const c = await contract;
@@ -63,6 +78,7 @@ function Marketplace({ courses }) {
   return (
     <>
       <MarketHeader />
+      <Button onClick={notify} />
       <List courses={courses}>
         {(course) => {
           const owned = ownedCourses.lookup[course.id];
