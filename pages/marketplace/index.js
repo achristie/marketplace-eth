@@ -17,7 +17,6 @@ function Marketplace({ courses }) {
   const [isNewPurchase, setIsNewPurchase] = useState(false);
 
   const purchaseCourse = async (order) => {
-    console.log(JSON.stringify(order));
     const hexCourseId = web3.utils.utf8ToHex(selectedCourse.id);
     const orderHash = web3.utils.soliditySha3(
       { type: "bytes16", value: hexCourseId },
@@ -25,7 +24,6 @@ function Marketplace({ courses }) {
     );
 
     const value = web3.utils.toWei(String(order.price));
-    console.log(contract);
 
     if (isNewPurchase) {
       const emailHash = web3.utils.sha3(order.email);
@@ -42,10 +40,9 @@ function Marketplace({ courses }) {
   const _purchaseCourse = async (hexCourseId, proof, value) => {
     try {
       const c = await contract;
-      const result = c.methods
+      c.methods
         .purchaseCourse(hexCourseId, proof)
         .send({ from: account.data, value });
-      console.log(result);
     } catch (err) {
       console.log("Purchase course operation has failed", err);
     }
