@@ -1,0 +1,35 @@
+import { toast } from "react-toastify";
+export const withToast = (promise) => {
+  toast.promise(
+    promise,
+    {
+      pending: {
+        render() {
+          return (
+            <div className="p-6 py-2">
+              <p className="mb-2">Your transaction is being processed</p>
+              <p>Hang tight.. Just a few momments..</p>
+            </div>
+          );
+        },
+      },
+      success: {
+        render({ data }) {
+          return (
+            <div>
+              <p classname="font-bold">Tx: {data.transactionHash}</p>
+              <p>Has been successfully processed</p>
+              <a
+                target="_blank"
+                href={`https://rinkeby.etherscan.io/tx/${data.transactionHash}`}
+              >
+                <i className="text-indigo-600 underline">See Tx Details</i>
+              </a>
+            </div>
+          );
+        },
+      },
+    },
+    { closeButton: true }
+  );
+};

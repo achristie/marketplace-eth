@@ -10,6 +10,7 @@ import { BaseLayout } from "@components/ui/layout";
 import { MarketHeader } from "@components/ui/marketplace";
 import { normalizeOwnedCourse } from "@utils/normalize";
 import { useState } from "react";
+import { withToast } from "utils/toast";
 
 const VerificationInput = ({ onVerify }) => {
   const [email, setEmail] = useState();
@@ -55,9 +56,12 @@ function ManageCourses() {
   const changeCourseState = async (courseHash, method) => {
     try {
       const c = await contract;
-      await c.methods[method](courseHash).send({ from: account.data });
+      const result = await c.methods[method](courseHash).send({
+        from: account.data,
+      });
+      return result;
     } catch (e) {
-      console.error(e.message);
+      throw new Error(e.message);
     }
   };
 
@@ -101,13 +105,17 @@ function ManageCourses() {
         <div className="mt-4">
           <Button
             variant="green"
-            onClick={() => changeCourseState(course.hash, "activateCourse")}
+            onClick={() =>
+              withToast(changeCourseState(course.hash, "activateCourse"))
+            }
           >
             Activate
           </Button>
           <Button
             variant="red"
-            onClick={() => changeCourseState(course.hash, "deactivateCourse")}
+            onClick={() =>
+              withToast(changeCourseState(course.hash, "deactivateCourse"))
+            }
           >
             Deactivate
           </Button>

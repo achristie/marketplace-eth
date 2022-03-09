@@ -197,7 +197,7 @@ export default function OrderModal({
         <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex">
           <Button
             disabled={formState.isDisabled}
-            onClick={() => onSubmit(order)}
+            onClick={() => onSubmit(order, course)}
           >
             Submit
           </Button>
